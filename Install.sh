@@ -28,16 +28,16 @@ while true; do
       ;;
     2)
       echo "🚀 Running 24/7 script from GitHub..."
-      # Download and run latest version of your 24/7 script
       wget -q https://raw.githubusercontent.com/Subhanplays/24-7/main/24-7.py -O ~/24-7.py
       python3 ~/24-7.py
       read -p "Press Enter to continue..."
       ;;
     3)
-      echo "🌐 Creating Playit tunnel..."
-      # Replace this with your actual playit command/path
+      echo "🌐 Downloading and running Playit tunnel..."
+      wget -q https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-linux-amd64 -O ~/playit
+      chmod +x ~/playit
       ~/playit
-      read -p "Press Enter after checking the tunnel IP..."
+      read -p "Press Enter to continue..."
       ;;
     0)
       echo "👋 Exiting..."
