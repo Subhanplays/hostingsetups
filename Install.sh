@@ -1,11 +1,14 @@
 #!/bin/bash
 
-# Define colors
+# Colors & styles
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+BOLD='\033[1m'
+UNDERLINE='\033[4m'
+BG_BLUE='\033[44m'
+RESET='\033[0m'
 
 # Typing effect function
 type_text() {
@@ -18,27 +21,60 @@ type_text() {
   echo
 }
 
-# Loading bar function
-progress_bar() {
-  echo -ne "${CYAN}Loading: ["
-  for ((i=0; i<=20; i++)); do
-    echo -ne "▓"
-    sleep 0.05
+# Spinner animation for background jobs
+spinner() {
+  local pid=$!
+  local delay=0.1
+  local spinstr='|/-\'
+  while kill -0 "$pid" 2>/dev/null; do
+    for i in $(seq 0 3); do
+      printf "\r${CYAN}${spinstr:$i:1} Loading...${RESET}"
+      sleep $delay
+    done
   done
-  echo -e "] Done!${NC}"
+  printf "\r${GREEN}✔ Done!       ${RESET}\n"
 }
 
-# Function for license prompt & validation (with restart on wrong)
-license_check() {
-  clear
-  type_text "💻 Welcome to Subhan's Hosting Installer..." 0.04
-  progress_bar
+# Loading bar with percentage
+progress_bar() {
+  local duration=$1
+  for ((i=0; i<=100; i+=5)); do
+    printf "\r${CYAN}Progress: [%-20s] %d%%${RESET}" $(printf "%0.s#" $(seq 1 $((i/5)))) $i
+    sleep $(bc -l <<< "$duration/20")
+  done
   echo
+}
+
+print_header() {
+  clear
+  echo -e "${BG_BLUE}${BOLD}  Welcome to Subhan Installer  ${RESET}"
+  echo
+}
+
+print_menu() {
+  echo -e "${CYAN}╔════════════════════════╗${RESET}"
+  echo -e "${CYAN}║${YELLOW} 1)${RESET} Install Panel           ${CYAN}║${RESET}"
+  echo -e "${CYAN}║${YELLOW} 2)${RESET} Start 24/7 Script       ${CYAN}║${RESET}"
+  echo -e "${CYAN}║${YELLOW} 3)${RESET} Create Tunnel (Playit)  ${CYAN}║${RESET}"
+  echo -e "${CYAN}║${YELLOW} 0)${RESET} Exit                   ${CYAN}║${RESET}"
+  echo -e "${CYAN}╚════════════════════════╝${RESET}"
+  echo
+  echo -ne "${GREEN}Choose option: ${RESET}"
+}
+
+print_credits() {
+  echo -e "${CYAN}✅ Made By Subhanplays${RESET}"
+  echo -e "${CYAN}✨ Inspire by Jishnu Gamer${RESET}"
+}
+
+# License validation with restart on fail
+license_check() {
+  print_header
   type_text "${CYAN}=============================="
   type_text "      🔐 License Required"
-  type_text "==============================${NC}"
+  type_text "==============================${RESET}"
 
-  read -p "$(echo -e ${YELLOW}Enter your license key:${NC} )" user_license
+  read -p "$(echo -e ${YELLOW}Enter your license key:${RESET} )" user_license
 
   if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
     echo -ne "${RED}❌ Invalid license"
@@ -46,76 +82,66 @@ license_check() {
       echo -n "."
       sleep 0.4
     done
-    echo -e " Please join our Discord to get a valid license.${NC}"
+    echo -e " Please join our Discord to get a valid license.${RESET}"
     sleep 2
-    exec "$0"  # Restart script
+    exec "$0"  # restart script
   fi
 }
 
-# Set the correct license here
+# Set your license key here
 REQUIRED_LICENSE="4358601972"
 
-# Run license check first
+# Run license check before menu
 license_check
 
-# Menu loop
+# Main menu loop
 while true; do
-  clear
-  echo -e "${CYAN}==============================${NC}"
-  echo -e "${CYAN}        🧰 Main Menu${NC}"
-  echo -e "${CYAN}==============================${NC}"
-  echo -e "${YELLOW}1)${NC} Install Panel"
-  echo -e "${YELLOW}2)${NC} Start 24/7 Script"
-  echo -e "${YELLOW}3)${NC} Create Tunnel (Playit)"
-  echo -e "${YELLOW}0)${NC} Exit"
-  echo -e "${CYAN}==============================${NC}"
-  read -p "$(echo -e ${GREEN}Choose an option:${NC} )" option
+  print_header
+  print_menu
+  read -r option
 
   case $option in
     1)
-      type_text "${GREEN}🔧 Installing PufferPanel...${NC}" 0.01
-      progress_bar
+      type_text "${GREEN}🔧 Installing PufferPanel...${RESET}" 0.01
+      progress_bar 2
 
       bash <(curl -s https://raw.githubusercontent.com/subhanplays/hostingsetups/main/puffer-panel-install)
 
-      type_text "${GREEN}👤 Creating admin user...${NC}" 0.01
+      type_text "${GREEN}👤 Creating admin user...${RESET}" 0.01
       sudo pufferpanel user add
 
-      type_text "${GREEN}🚀 Enabling and starting PufferPanel...${NC}" 0.01
+      type_text "${GREEN}🚀 Enabling and starting PufferPanel...${RESET}" 0.01
       sudo systemctl enable --now pufferpanel
 
       echo
-      type_text "${CYAN}✅ Made By Subhanplays" 0.03
-      type_text "${CYAN}✨ Inspire by Jishnu Gamer${NC}" 0.03
-      read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
+      print_credits
+      read -p "$(echo -e ${YELLOW}Press Enter to continue...${RESET})"
       ;;
     2)
-      type_text "${GREEN}🚀 Running 24/7 script from GitHub...${NC}" 0.01
-      progress_bar
+      type_text "${GREEN}🚀 Running 24/7 script from GitHub...${RESET}" 0.01
+      progress_bar 2
 
       wget -q https://raw.githubusercontent.com/Subhanplays/24-7/main/24-7.py -O ~/24-7.py
       python3 ~/24-7.py
 
       echo
-      type_text "${CYAN}✅ Made By Subhanplays" 0.03
-      type_text "${CYAN}✨ Inspire by Jishnu Gamer${NC}" 0.03
-      read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
+      print_credits
+      read -p "$(echo -e ${YELLOW}Press Enter to continue...${RESET})"
       ;;
     3)
-      type_text "${GREEN}🌐 Downloading and running Playit tunnel...${NC}" 0.01
-      progress_bar
+      type_text "${GREEN}🌐 Downloading and running Playit tunnel...${RESET}" 0.01
+      progress_bar 2
 
       wget -q https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-linux-amd64 -O ~/playit
       chmod +x ~/playit
       ~/playit
 
       echo
-      type_text "${CYAN}✅ Made By Subhanplays" 0.03
-      type_text "${CYAN}✨ Inspire by Jishnu Gamer${NC}" 0.03
-      read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
+      print_credits
+      read -p "$(echo -e ${YELLOW}Press Enter to continue...${RESET})"
       ;;
     0)
-      echo -e "${RED}👋 Exiting...${NC}"
+      echo -e "${RED}👋 Exiting...${RESET}"
       exit 0
       ;;
     *)
@@ -124,9 +150,8 @@ while true; do
         echo -n "."
         sleep 0.4
       done
-      echo -e " Restarting menu...${NC}"
+      echo -e " Restarting menu...${RESET}"
       sleep 1
-      continue
       ;;
   esac
 done
