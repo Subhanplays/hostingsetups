@@ -28,29 +28,35 @@ progress_bar() {
   echo -e "] Done!${NC}"
 }
 
-# Welcome animation
-clear
-type_text "💻 Welcome to Hosting Installer..." 0.04
-progress_bar
+# Function for license prompt & validation (with restart on wrong)
+license_check() {
+  clear
+  type_text "💻 Welcome to Subhan's Hosting Installer..." 0.04
+  progress_bar
+  echo
+  type_text "${CYAN}=============================="
+  type_text "      🔐 License Required"
+  type_text "==============================${NC}"
 
-# License check
+  read -p "$(echo -e ${YELLOW}Enter your license key:${NC} )" user_license
+
+  if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
+    echo -ne "${RED}❌ Invalid license"
+    for i in {1..3}; do
+      echo -n "."
+      sleep 0.4
+    done
+    echo -e " Please join our Discord to get a valid license.${NC}"
+    sleep 2
+    exec "$0"  # Restart script
+  fi
+}
+
+# Set the correct license here
 REQUIRED_LICENSE="4358601972"
-echo
-type_text "${CYAN}=============================="
-type_text "      🔐 License Required"
-type_text "==============================${NC}"
 
-read -p "$(echo -e ${YELLOW}Enter your license key:${NC} )" user_license
-
-if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
-  echo -ne "${RED}❌ Invalid license"
-  for i in {1..3}; do
-    echo -n "."
-    sleep 0.4
-  done
-  echo -e " Please join our Discord to get a valid license.${NC}"
-  exit 1
-fi
+# Run license check first
+license_check
 
 # Menu loop
 while true; do
