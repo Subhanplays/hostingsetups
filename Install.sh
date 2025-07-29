@@ -14,7 +14,7 @@ CORRECT_LICENSE="1cfsa2sddv4d"
 if [[ ! -f "$LICENSE_FILE" ]]; then
   echo -e "${CYAN}🔐 License Required!${NC}"
   echo -e "Join our Discord to get your license key:"
-  echo -e "${YELLOW}👉 https://discord.gg/your-server${NC}"
+  echo -e "${YELLOW}👉 https://discord.gg/aSXyvaAnZN${NC}"
   echo ""
 
   read -p "Enter your license key: " user_license
