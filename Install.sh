@@ -7,6 +7,28 @@ CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# License check
+LICENSE_FILE="$HOME/.myscript_license"
+CORRECT_LICENSE="1cfsa2sddv4d"
+
+if [[ ! -f "$LICENSE_FILE" ]]; then
+  echo -e "${CYAN}🔐 License Required!${NC}"
+  echo -e "Join our Discord to get your license key:"
+  echo -e "${YELLOW}👉 https://discord.gg/your-server${NC}"
+  echo ""
+
+  read -p "Enter your license key: " user_license
+
+  if [[ "$user_license" == "$CORRECT_LICENSE" ]]; then
+    echo "$user_license" > "$LICENSE_FILE"
+    echo -e "${GREEN}✅ License verified! Welcome.${NC}"
+    sleep 1
+  else
+    echo -e "${RED}❌ Invalid license. Please get the correct one from Discord.${NC}"
+    exit 1
+  fi
+fi
+
 while true; do
   clear
   echo -e "${CYAN}==============================${NC}"
@@ -31,7 +53,7 @@ while true; do
       sudo systemctl enable --now pufferpanel
 
       echo -e "\n${CYAN}Made By Subhanplays${NC}"
-      echo -e "${CYAN}inspire by jishnu gamer${NC}"
+      echo -e "${CYAN}Inspire by Jishnu Gamer${NC}"
       read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     2)
@@ -40,7 +62,7 @@ while true; do
       python3 ~/24-7.py
 
       echo -e "\n${CYAN}Made By Subhanplays${NC}"
-      echo -e "${CYAN}inspire by jishnu gamer${NC}"
+      echo -e "${CYAN}Inspire by Jishnu Gamer${NC}"
       read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     3)
@@ -50,7 +72,7 @@ while true; do
       ~/playit
 
       echo -e "\n${CYAN}Made By Subhanplays${NC}"
-      echo -e "${CYAN}inspire by jishnu gamer${NC}"
+      echo -e "${CYAN}Inspire by Jishnu Gamer${NC}"
       read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     0)
@@ -63,4 +85,3 @@ while true; do
       ;;
   esac
 done
-
