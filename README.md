@@ -26,7 +26,7 @@ A modern Minecraft server panel with advanced features and a smooth UI.
 **Install using:**
 
 ```bash
-curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/skyport-install.sh | bash
+curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/install-2.sh 
 ```
 
 ---
