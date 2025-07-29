@@ -73,7 +73,7 @@ pm2 logs index    # View Skyport logs
 
 ## Author
 
-Subhan Zahid Madni Sial  
+Subhan Zahid AKA SubhanPlays
 GitHub: [https://github.com/Subhanplays](https://github.com/Subhanplays)
 
 ---
