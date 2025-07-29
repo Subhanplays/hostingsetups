@@ -62,7 +62,7 @@ Skyport installation directory defaults to skyport; you can modify the script to
 Node.js version 20.x is used in installations via NodeSource.
 
 Author
-Subhan Zahid Madni Sial
+Subhan Zahid aka Subhanplays
 GitHub: https://github.com/Subhanplays
 
 License
