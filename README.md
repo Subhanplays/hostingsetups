@@ -68,10 +68,12 @@ GitHub: https://github.com/Subhanplays
 License
 Scripts and materials are provided "as-is" without warranty. Use at your own risk.
 
-yaml
+pgsql
 Copy
 Edit
 
 ---
 
-If you want, I can help you generate any other documentation or README sections!
+If you still see “yaml Copy Edit” or something else inside your README file after saving, it’s likely due to the editor or website where you’re pasting — make sure you’re pasting into a plain text editor or GitHub’s raw file editor without UI noise.
+
+Want me to help you with how to upload or edit the README cleanly?
