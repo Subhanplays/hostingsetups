@@ -1,29 +1,44 @@
 #!/bin/bash
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 clear
-echo "==============================="
-echo " Skyport Installer Menu"
-echo "==============================="
-echo "1) Install Panel"
-echo "2) Install Wings / Node"
-echo "3) Install Both"
-echo "4) Exit"
-echo "==============================="
-read -rp "Choose an option [1-4]: " choice
+echo -e "${CYAN}==============================="
+echo -e " ${GREEN}Skyport Installer Menu${CYAN}"
+echo -e "===============================${NC}"
+echo -e "${YELLOW}1)${NC} Install Panel"
+echo -e "${YELLOW}2)${NC} Install Wings / Node"
+echo -e "${YELLOW}3)${NC} Install 24/7 Script"
+echo -e "${YELLOW}4)${NC} Exit"
+echo -e "==============================="
+read -rp "$(echo -e ${CYAN}Choose an option [1-4]:${NC} )" choice
 
 install_panel() {
-  echo "Installing Panel..."
+  echo -e "${GREEN}Installing Panel...${NC}"
   bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/skyport-install.sh)
-  echo "Panel installation completed."
+  echo -e "${GREEN}Panel installation completed.${NC}"
 }
 
 install_wings() {
-  echo "Installing Wings / Node..."
+  echo -e "${GREEN}Installing Wings / Node...${NC}"
   bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/wing.sh)
-  echo "Changing directory to skyportd..."
-  cd skyportd || { echo "Directory 'skyportd' not found!"; exit 1; }
-  echo "Please paste your node configuration now (edit files as needed)."
-  echo "After configuration, start node with: pm2 start ."
+  echo -e "${GREEN}Changing directory to skyportd...${NC}"
+  cd skyportd || { echo -e "${RED}Directory 'skyportd' not found!${NC}"; exit 1; }
+  echo -e "${YELLOW}Please paste your node configuration now (edit files as needed).${NC}"
+  echo -e "${YELLOW}After configuration, start node with: pm2 start .${NC}"
+}
+
+install_24_7() {
+  echo -e "${GREEN}Installing 24/7 script...${NC}"
+  curl -O https://raw.githubusercontent.com/Subhanplays/24-7/main/24-7.py
+  echo -e "${GREEN}Running 24/7 script with python3...${NC}"
+  python3 24-7.py
+  echo -e "${GREEN}24/7 script started.${NC}"
 }
 
 case $choice in
@@ -34,15 +49,14 @@ case $choice in
     install_wings
     ;;
   3)
-    install_panel
-    install_wings
+    install_24_7
     ;;
   4)
-    echo "Exiting installer."
+    echo -e "${CYAN}Exiting installer.${NC}"
     exit 0
     ;;
   *)
-    echo "Invalid option. Exiting."
+    echo -e "${RED}Invalid option. Exiting.${NC}"
     exit 1
     ;;
 esac
