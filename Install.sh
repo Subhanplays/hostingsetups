@@ -41,6 +41,7 @@ while true; do
       ;;
     0)
       echo "👋 Exiting..."
+      echo "Made By Subhanplays and inspire by jishnu gamer"
       exit 0
       ;;
     *)
@@ -49,3 +50,4 @@ while true; do
       ;;
   esac
 done
+
