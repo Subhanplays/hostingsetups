@@ -30,7 +30,7 @@ progress_bar() {
 
 # Welcome animation
 clear
-type_text "💻 Welcome to Subhan's Hosting Installer..." 0.04
+type_text "💻 Welcome to Hosting Installer..." 0.04
 progress_bar
 
 # License check
