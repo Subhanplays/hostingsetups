@@ -8,27 +8,19 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # License check
-LICENSE_FILE="$HOME/.myscript_license"
-CORRECT_LICENSE="1cfsa2sddv4d"
+REQUIRED_LICENSE="1cfsa2sddv4d"
+clear
+echo -e "${CYAN}=============================="
+echo -e "      🔐 License Required"
+echo -e "==============================${NC}"
+read -p "$(echo -e ${YELLOW}Enter your license key:${NC} )" user_license
 
-if [[ ! -f "$LICENSE_FILE" ]]; then
-  echo -e "${CYAN}🔐 License Required!${NC}"
-  echo -e "Join our Discord to get your license key:"
-  echo -e "${YELLOW}👉 https://discord.gg/aSXyvaAnZN${NC}"
-  echo ""
-
-  read -p "Enter your license key: " user_license
-
-  if [[ "$user_license" == "$CORRECT_LICENSE" ]]; then
-    echo "$user_license" > "$LICENSE_FILE"
-    echo -e "${GREEN}✅ License verified! Welcome.${NC}"
-    sleep 1
-  else
-    echo -e "${RED}❌ Invalid license. Please get the correct one from Discord.${NC}"
-    exit 1
-  fi
+if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
+  echo -e "${RED}❌ Invalid license. Join our Discord to get a valid license.${NC}"
+  exit 1
 fi
 
+# Menu loop
 while true; do
   clear
   echo -e "${CYAN}==============================${NC}"
@@ -52,8 +44,8 @@ while true; do
       echo -e "${GREEN}🚀 Enabling and starting PufferPanel...${NC}"
       sudo systemctl enable --now pufferpanel
 
-      echo -e "\n${CYAN}Made By Subhanplays${NC}"
-      echo -e "${CYAN}Inspire by Jishnu Gamer${NC}"
+      echo -e "\n${CYAN}✅ Made By Subhanplays${NC}"
+      echo -e "${CYAN}✨ Inspire by Jishnu Gamer${NC}"
       read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     2)
@@ -61,8 +53,8 @@ while true; do
       wget -q https://raw.githubusercontent.com/Subhanplays/24-7/main/24-7.py -O ~/24-7.py
       python3 ~/24-7.py
 
-      echo -e "\n${CYAN}Made By Subhanplays${NC}"
-      echo -e "${CYAN}Inspire by Jishnu Gamer${NC}"
+      echo -e "\n${CYAN}✅ Made By Subhanplays${NC}"
+      echo -e "${CYAN}✨ Inspire by Jishnu Gamer${NC}"
       read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     3)
@@ -71,8 +63,8 @@ while true; do
       chmod +x ~/playit
       ~/playit
 
-      echo -e "\n${CYAN}Made By Subhanplays${NC}"
-      echo -e "${CYAN}Inspire by Jishnu Gamer${NC}"
+      echo -e "\n${CYAN}✅ Made By Subhanplays${NC}"
+      echo -e "${CYAN}✨ Inspire by Jishnu Gamer${NC}"
       read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     0)
@@ -80,8 +72,10 @@ while true; do
       exit 0
       ;;
     *)
-      echo -e "${RED}❌ Invalid option. Try again.${NC}"
-      sleep 2
+      echo -e "${RED}❌ Invalid option. Restarting menu...${NC}"
+      sleep 1
+      exec "$0"
       ;;
   esac
 done
+
