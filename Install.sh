@@ -1,53 +1,65 @@
 #!/bin/bash
 
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 while true; do
   clear
-  echo "=============================="
-  echo "        🧰 Main Menu"
-  echo "=============================="
-  echo "1) Install Panel"
-  echo "2) Start 24/7 Script"
-  echo "3) Create Tunnel (Playit)"
-  echo "0) Exit"
-  echo "=============================="
-  read -p "Choose an option: " option
+  echo -e "${CYAN}==============================${NC}"
+  echo -e "${CYAN}        🧰 Main Menu${NC}"
+  echo -e "${CYAN}==============================${NC}"
+  echo -e "${YELLOW}1)${NC} Install Panel"
+  echo -e "${YELLOW}2)${NC} Start 24/7 Script"
+  echo -e "${YELLOW}3)${NC} Create Tunnel (Playit)"
+  echo -e "${YELLOW}0)${NC} Exit"
+  echo -e "${CYAN}==============================${NC}"
+  read -p "$(echo -e ${GREEN}Choose an option:${NC} )" option
 
   case $option in
     1)
-      echo "🔧 Installing PufferPanel..."
+      echo -e "${GREEN}🔧 Installing PufferPanel...${NC}"
       bash <(curl -s https://raw.githubusercontent.com/subhanplays/hostingsetups/main/puffer-panel-install)
 
-      echo "👤 Creating admin user..."
+      echo -e "${GREEN}👤 Creating admin user...${NC}"
       sudo pufferpanel user add
 
-      echo "🚀 Enabling and starting PufferPanel..."
+      echo -e "${GREEN}🚀 Enabling and starting PufferPanel...${NC}"
       sudo systemctl enable --now pufferpanel
 
-      echo "✅ PufferPanel installation complete!"
-      read -p "Press Enter to continue..."
+      echo -e "\n${CYAN}Made By Subhanplays${NC}"
+      echo -e "${CYAN}inspire by jishnu gamer${NC}"
+      read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     2)
-      echo "🚀 Running 24/7 script from GitHub..."
+      echo -e "${GREEN}🚀 Running 24/7 script from GitHub...${NC}"
       wget -q https://raw.githubusercontent.com/Subhanplays/24-7/main/24-7.py -O ~/24-7.py
       python3 ~/24-7.py
-      read -p "Press Enter to continue..."
+
+      echo -e "\n${CYAN}Made By Subhanplays${NC}"
+      echo -e "${CYAN}inspire by jishnu gamer${NC}"
+      read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     3)
-      echo "🌐 Downloading and running Playit tunnel..."
+      echo -e "${GREEN}🌐 Downloading and running Playit tunnel...${NC}"
       wget -q https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-linux-amd64 -O ~/playit
       chmod +x ~/playit
       ~/playit
-      read -p "Press Enter to continue..."
+
+      echo -e "\n${CYAN}Made By Subhanplays${NC}"
+      echo -e "${CYAN}inspire by jishnu gamer${NC}"
+      read -p "$(echo -e ${YELLOW}Press Enter to continue...${NC})"
       ;;
     0)
-      echo "👋 Exiting..."
-      echo "Made By Subhanplays and inspire by jishnu gamer"
+      echo -e "${RED}👋 Exiting...${NC}"
       exit 0
       ;;
     *)
-      echo "❌ Invalid option. Try again."
+      echo -e "${RED}❌ Invalid option. Try again.${NC}"
       sleep 2
       ;;
   esac
 done
-
