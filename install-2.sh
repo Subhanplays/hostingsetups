@@ -8,7 +8,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # License Key Check
-VALID_LICENSE_KEY="4358601972"
+VALID_LICENSE_KEY="126575"
 read -rp "$(echo -e ${CYAN}Enter your license key:${NC} )" input_key
 
 if [[ "$input_key" != "$VALID_LICENSE_KEY" ]]; then
