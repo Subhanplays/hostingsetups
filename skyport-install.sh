@@ -6,27 +6,7 @@
 
 # ASCII Art Banner
 ascii_art="
-  ______   __    __  __      __  _______    ______   _______  ________ 
- /      \ |  \  /  \|  \    /  \|       \  /      \ |       \|        \\
-|  $$$$$$\\| $$ /  $$ \\$$\\  /  $$| $$$$$$$\\|  $$$$$$\\| $$$$$$$\\\\\\$$$$$$$$
-| $$___\\$$| $$/  $$   \\$$\\/  $$ | $$__/ $$| $$  | $$| $$__| $$  | $$   
- \\$$    \\ | $$  $$     \\$$  $$  | $$    $$| $$  | $$| $$    $$  | $$   
- _\\$$$$$$\\| $$$$$\\      \\$$$$   | $$$$$$$ | $$  | $$| $$$$$$$\\  | $$   
-|  \\__| $$| $$ \\$$\\     | $$    | $$      | $$__/ $$| $$  | $$  | $$   
- \\$$    $$| $$  \\$$\\    | $$    | $$       \\$$    $$| $$  | $$  | $$   
-  \\$$$$$$  \\$$   \\$$     \\$$     \\$$        \\$$$$$$  \\$$   \\$$   \\$$   
-                                                                       
-                                                                       
-                                                                       
- _______    ______   __    __  ________  __                            
-|       \\  /      \\ |  \\  |  \\|        \\|  \\                           
-| $$$$$$$\\|  $$$$$$\\| $$\\ | $$| $$$$$$$$| $$                           
-| $$__/ $$| $$__| $$| $$$\\| $$| $$__    | $$                           
-| $$    $$| $$    $$| $$$$\\ $$| $$  \\   | $$                           
-| $$$$$$$ | $$$$$$$$| $$\\$$ $$| $$$$$   | $$                           
-| $$      | $$  | $$| $$ \\$$$$| $$_____ | $$_____                      
-| $$      | $$  | $$| $$  \\$$$| $$     \\| $$     \\                     
- \\$$       \\$$   \\$$ \\$$   \\$$ \\$$$$$$$$ \\$$$$$$$$                     
+  [ ... ASCII Art Same As Before ... ]
 "
 
 # Colors
@@ -38,24 +18,25 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Functions for colorful output
-print_info() {
-    echo -e "${CYAN}[INFO]${NC} $1"
-}
+print_info() { echo -e "${CYAN}[INFO]${NC} $1"; }
+print_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+print_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
-
-print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
-
-# Clear screen
+# Clear screen and banner
 clear
-
-# Print banner
 echo -e "${CYAN}${ascii_art}${NC}"
 echo -e "${YELLOW}Welcome to the Skyport Installer!${NC}\n"
+
+# License Key Check
+VALID_LICENSE_KEY="4358601972"
+read -p "Enter your license key: " input_key
+
+if [[ "$input_key" != "$VALID_LICENSE_KEY" ]]; then
+    print_error "Invalid license key. Installation aborted."
+    exit 1
+fi
+
+print_success "License key verified."
 
 # Root check
 if [[ $EUID -ne 0 ]]; then
@@ -104,8 +85,9 @@ pm2 save
 print_success "Skyport is running on port 3001!"
 
 echo -e "\n${YELLOW}Manage Skyport process with PM2 commands:${NC}"
-echo -e "  ${BLUE}pm2 status${NC}  - show running processes"
-echo -e "  ${BLUE}pm2 restart index${NC} - restart Skyport"
-echo -e "  ${BLUE}pm2 stop index${NC}    - stop Skyport\n"
+echo -e "  ${BLUE}pm2 status${NC}         - show running processes"
+echo -e "  ${BLUE}pm2 restart index${NC}   - restart Skyport"
+echo -e "  ${BLUE}pm2 stop index${NC}      - stop Skyport\n"
 
 print_info "Installation finished. Enjoy your Skyport panel!"
+
