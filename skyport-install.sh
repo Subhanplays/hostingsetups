@@ -27,17 +27,6 @@ clear
 echo -e "${CYAN}${ascii_art}${NC}"
 echo -e "${YELLOW}Welcome to the Skyport Installer!${NC}\n"
 
-# License Key Check
-VALID_LICENSE_KEY="4358601972"
-read -p "Enter your license key: " input_key
-
-if [[ "$input_key" != "$VALID_LICENSE_KEY" ]]; then
-    print_error "Invalid license key. Installation aborted."
-    exit 1
-fi
-
-print_success "License key verified."
-
 # Root check
 if [[ $EUID -ne 0 ]]; then
     print_error "Please run this script as root (sudo)."
