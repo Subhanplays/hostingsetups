@@ -33,13 +33,13 @@ print_menu() {
 
 install_panel() {
   echo -e "${YELLOW}Installing panel...${RESET}"
-  curl -s -O https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-1.sh
+  bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-1.sh)
   echo -e "${GREEN}✅ Panel Installed${RESET}"
 }
 
 install_node() {
   echo -e "${YELLOW}Installing Node.js...${RESET}"
-  curl -s -O https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-wing.sh
+  bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-wing.sh)
   cd node || exit
   echo -e "${GREEN}✅ Node Installed. Paste your configuration inside 'node' folder.${RESET}"
 }
