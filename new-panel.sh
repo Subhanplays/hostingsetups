@@ -1,12 +1,12 @@
 #!/bin/bash
+# V4Panel Auto Installer & Manager
+# Made by Subhan Zahid
 
-# Colors
 GREEN="\e[32m"
 RED="\e[31m"
 YELLOW="\e[33m"
 RESET="\e[0m"
 
-# Function to show menu
 show_menu() {
   clear
   echo -e "${GREEN}====== V4Panel Setup & Manager ======${RESET}"
@@ -18,14 +18,15 @@ show_menu() {
   echo -n "Choose an option: "
 }
 
-# Install & setup
 install_v4panel() {
   echo -e "${YELLOW}Installing dependencies...${RESET}"
   curl -sL https://deb.nodesource.com/setup_23.x | sudo bash -
   sudo apt-get install -y nodejs git zip unzip wget
 
   echo -e "${YELLOW}Cloning repository...${RESET}"
-  git clone https://github.com/teryxlabs/v4panel || true
+  if [ ! -d "v4panel" ]; then
+    git clone https://github.com/teryxlabs/v4panel
+  fi
 
   cd v4panel || exit
 
@@ -40,14 +41,12 @@ install_v4panel() {
   echo -e "${GREEN}✅ V4Panel Installed Successfully!${RESET}"
 }
 
-# Start panel
 start_panel() {
   cd v4panel || exit
   echo -e "${YELLOW}Starting panel...${RESET}"
   node .
 }
 
-# Keep panel 24/7 using PM2
 run_pm2() {
   cd v4panel || exit
   echo -e "${YELLOW}Installing PM2...${RESET}"
@@ -58,7 +57,6 @@ run_pm2() {
   echo -e "${GREEN}✅ Panel is now running 24/7 with PM2${RESET}"
 }
 
-# Setup Playit Tunnel (for IP)
 setup_playit() {
   echo -e "${YELLOW}Downloading Playit Tunnel...${RESET}"
   wget -O playit-linux-amd64 https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-linux-amd64
@@ -67,7 +65,6 @@ setup_playit() {
   ./playit-linux-amd64
 }
 
-# Main loop
 while true; do
   show_menu
   read -r choice
