@@ -7,10 +7,8 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
-# License key (change as needed)
+# ===== License Key =====
 REQUIRED_LICENSE="ABC-123-XYZ"
-
-# Check license
 read -p "$(echo -e ${YELLOW}Enter your license key: ${RESET})" user_license
 if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
     echo -e "${RED}❌ Invalid license!${RESET}"
@@ -18,7 +16,7 @@ if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
 fi
 echo -e "${GREEN}✔ License validated!${RESET}"
 
-# Menu
+# ===== Menu =====
 print_menu() {
   clear
   echo -e "${GREEN}====== VPS & Node Installer ======${RESET}"
@@ -31,17 +29,45 @@ print_menu() {
   echo -ne "${YELLOW}Choose option: ${RESET}"
 }
 
+# ===== Functions =====
 install_panel() {
-  echo -e "${YELLOW}Installing panel...${RESET}"
-  bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-1.sh)
-  echo -e "${GREEN}✅ Panel Installed${RESET}"
+  echo -e "${YELLOW}Installing Panel...${RESET}"
+
+  # Install basic dependencies
+  sudo apt update
+  sudo apt install -y git zip unzip curl
+
+  # Install Node.js (if not installed)
+  if ! command -v node >/dev/null 2>&1; then
+    curl -fsSL https://deb.nodesource.com/setup_23.x | sudo bash -
+    sudo apt install -y nodejs
+  fi
+
+  # Clone panel repository
+  if [ ! -d "v4panel" ]; then
+    git clone https://github.com/teryxlabs/v4panel
+  fi
+
+  cd v4panel || exit
+
+  # Install panel dependencies and run setup
+  unzip -o panel.zip 2>/dev/null
+  npm install
+  npm run seed
+  npm run createUser
+
+  echo -e "${GREEN}✅ Panel Installed Successfully!${RESET}"
+  echo -e "${YELLOW}Next steps:${RESET}"
+  echo -e "1) Paste your panel configuration if needed."
+  echo -e "2) Start the panel with: ${GREEN}node .${RESET}"
 }
 
 install_node() {
   echo -e "${YELLOW}Installing Node.js...${RESET}"
-  bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-wing.sh)
-  cd node || exit
-  echo -e "${GREEN}✅ Node Installed. Paste your configuration inside 'node' folder.${RESET}"
+  curl -s -O https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-wing.sh
+  chmod +x new-panel-wing.sh
+  sudo bash new-panel-wing.sh
+  echo -e "${GREEN}✅ Node Installed${RESET}"
 }
 
 start_node() {
@@ -65,7 +91,7 @@ setup_playit() {
   ./playit-linux-amd64
 }
 
-# Main loop
+# ===== Main Loop =====
 while true; do
   print_menu
   read -r choice
