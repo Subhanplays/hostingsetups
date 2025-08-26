@@ -1,5 +1,5 @@
 #!/bin/bash
-# VPS + Node + 24/7 + Playit Installer
+# VPS + Node + 24/7 + Playit Installer with License Key
 # Made by Subhanplays
 
 GREEN='\033[0;32m'
@@ -7,10 +7,22 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
+# License key (change as needed)
+REQUIRED_LICENSE="ABC-123-XYZ"
+
+# Check license
+read -p "$(echo -e ${YELLOW}Enter your license key: ${RESET})" user_license
+if [[ "$user_license" != "$REQUIRED_LICENSE" ]]; then
+    echo -e "${RED}❌ Invalid license!${RESET}"
+    exit 1
+fi
+echo -e "${GREEN}✔ License validated!${RESET}"
+
+# Menu
 print_menu() {
   clear
   echo -e "${GREEN}====== VPS & Node Installer ======${RESET}"
-  echo "1) Install panel"
+  echo "1) Install Panel"
   echo "2) Install Node.js"
   echo "3) Start Node"
   echo "4) Run 24/7 Script"
@@ -19,10 +31,10 @@ print_menu() {
   echo -ne "${YELLOW}Choose option: ${RESET}"
 }
 
-install_vps() {
-  echo -e "${YELLOW}Installing Jishnu VPS script...${RESET}"
+install_panel() {
+  echo -e "${YELLOW}Installing panel...${RESET}"
   sudo bash <(curl -s https://raw.githubusercontent.com/Subhanplays/hostingsetups/main/new-panel-1.sh)
-  echo -e "${GREEN}✅ VPS Script Installed${RESET}"
+  echo -e "${GREEN}✅ Panel Installed${RESET}"
 }
 
 install_node() {
@@ -32,9 +44,9 @@ install_node() {
   echo -e "${GREEN}✅ Node Installed. Paste your configuration inside 'node' folder.${RESET}"
 }
 
-start_node_app() {
+start_node() {
   cd node || exit
-  echo -e "${YELLOW}Starting Node App...${RESET}"
+  echo -e "${YELLOW}Starting Node app...${RESET}"
   node .
 }
 
@@ -53,13 +65,14 @@ setup_playit() {
   ./playit-linux-amd64
 }
 
+# Main loop
 while true; do
   print_menu
   read -r choice
   case $choice in
-    1) install_vps ;;
+    1) install_panel ;;
     2) install_node ;;
-    3) start_node_app ;;
+    3) start_node ;;
     4) run_24_7 ;;
     5) setup_playit ;;
     0) echo -e "${GREEN}Exiting...${RESET}"; exit 0 ;;
@@ -68,3 +81,4 @@ while true; do
   echo -e "\nPress Enter to continue..."
   read -r
 done
+
